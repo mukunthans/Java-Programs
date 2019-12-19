@@ -1,0 +1,51 @@
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+    public void wordcombination(List<List<String>> texts,int [] res,int pos)
+    {
+       if(pos==texts.size())
+       {
+           for(int i=0;i<texts.size();i++)
+           {
+               System.out.print(texts.get(i).get(res[i])+" ");
+               
+           }
+           System.out.println();
+           return;
+       }
+     
+     
+       for(int i=0;i<texts.get(pos).size();i++)
+       {
+           res[pos]=i;
+           wordcombination(texts,res,pos+1);
+       }
+     
+     
+        
+    }
+    
+    
+    public static void main (String[] args) {
+        List<String> l1=new ArrayList<>();
+        l1.add("Quick");
+        l1.add("Slow");
+        List<String> l2=new ArrayList<>();
+        l2.add("black");
+        l2.add("white");
+        List<String> l3=new ArrayList<>();
+        l3.add("dog");
+        l3.add("cat");
+        l3.add("ant");
+        List<List<String>> texts=new ArrayList<>();
+        texts.add(l1);
+        texts.add(l2);
+        texts.add(l3);
+        int []res=new int[texts.size()];
+        Main m= new Main();
+        m.wordcombination(texts,res,0);
+    }
+}
