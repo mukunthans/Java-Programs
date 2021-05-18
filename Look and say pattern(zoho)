@@ -1,0 +1,46 @@
+/* input : 5
+   output : 1
+            11
+            21
+            1211
+            111221 */
+import java.util.*; // Collection class in util
+import java.lang.*;  
+
+public class Program {
+    public static void main(String[] args)
+    {
+        Scanner s = new Scanner(System.in);
+        int n = s.nextInt();
+        List<Integer> prevList =  new ArrayList<>();
+        List<Integer> list =  new ArrayList<>();
+        prevList.add(1);
+        System.out.println(prevList);
+        for(int i=1;i<n;i++)
+        {
+             int[] arr = new int[10];
+             for(int j=0;j<prevList.size();j++)
+             {
+                 int m =  prevList.get(j);
+                 arr[m]++;
+                 if(j+1==prevList.size() || prevList.get(j+1)!=m)
+                 {
+                     list.add(arr[m]);
+                     list.add(m);
+                     Arrays.setAll(arr,i1->0); //static void setAll(int[] array, IntUnaryOperator generator);
+                 }
+             }
+
+             System.out.println(list);
+             prevList.clear();
+             for(Integer num : list)
+             {
+                 prevList.add(num);
+             }
+             list.clear();
+
+        }
+
+    }
+}
+            
