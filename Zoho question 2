@@ -1,0 +1,32 @@
+/* ip: a1b2c3
+   op : abbccc */
+   
+   
+import java.util.*;
+import java.lang.*;
+
+public class Program {
+    public static void main(String[] args)
+    {
+        Scanner s = new Scanner(System.in);
+        String str = s.next();
+        String ans ="";
+        String temp;
+        for(int i=0;i<str.length();i=i+2)
+        {
+
+                char ch = str.charAt(i);
+                temp = "";
+                temp=temp+str.charAt(i+1);
+                int n=Integer.parseInt(temp);
+                for(int j=0;j<n;j++)
+                {
+                    ans=ans+str.charAt(i);
+                }
+
+        }
+        System.out.println(ans);
+
+
+    }
+}
