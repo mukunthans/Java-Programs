@@ -1,0 +1,69 @@
+A binary tree is univalued if every node in the tree has the same value.
+
+Return true if and only if the given tree is univalued.
+
+ 
+
+Example 1:
+
+
+Input: [1,1,1,1,1,null,1]
+Output: true
+
+
+Solution 1 :
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    boolean flag;
+    public boolean isUnivalTree(TreeNode root) {
+        flag=true;
+        int val=root.val;
+        rec(root,val);
+        return flag;
+        
+    }
+    public void rec(TreeNode root,int val)
+    {
+        if(root!=null)
+        {
+            if(root.val != val )
+            {
+                flag=false;
+            }
+            else
+            {
+                rec(root.left,val);
+                rec(root.right,val);
+            }
+        }
+        
+    }
+}
+
+
+Solution 2 :
+class Solution {
+    
+    public boolean isUnivalTree(TreeNode root) {
+      boolean left = root.left==null || (root.left.val == root.val && isUnivalTree(root.left));
+       boolean right = root.right==null || (root.right.val == root.val && isUnivalTree(root.right)); 
+        return left && right;
+        
+    }
+
+}
