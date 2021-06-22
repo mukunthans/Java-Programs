@@ -1,0 +1,115 @@
+Input: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+Output: [3,9,20,null,null,15,7]
+
+Solution  1 :
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+
+
+            TreeNode root = new TreeNode(preorder[0]);
+        
+        if(preorder.length==1)
+        {
+            
+            return root;
+        }
+
+        int i;
+        for( i=0;inorder[i]!=root.val && i<inorder.length ;i++);
+        int[] left = new int[i];
+        int[] right = new int [inorder.length-i-1];
+        int[] preLeft = new int[i];
+        int[] preRight = new int [inorder.length-i-1] ;
+        if(left.length==0 )
+        {
+            root.left=null;
+            System.arraycopy(preorder,i+1,preRight,0,right.length);
+            System.arraycopy(inorder,i+1,right,0,right.length);
+            root.right=buildTree(preRight,right);
+            return root;
+            
+        }
+
+
+        else if(right.length==0 )
+        {
+            root.right= null;
+            System.arraycopy(preorder,1,preLeft,0,left.length);
+            System.arraycopy(inorder,0,left,0,left.length);
+            root.left =  buildTree(preLeft,left);
+            return root;
+            
+        }
+
+        else
+        {
+        System.arraycopy(preorder,1,preLeft,0,left.length);
+        System.arraycopy(inorder,0,left,0,left.length);
+        System.arraycopy(preorder,i+1,preRight,0,right.length);
+        System.arraycopy(inorder,i+1,right,0,right.length);  
+        root.left =  buildTree(preLeft,left);
+        root.right= buildTree(preRight,right);
+        
+
+        return root;
+        }
+        
+        
+    }
+
+        
+Sol 2 :
+
+
+class Solution {
+    int preorderIndex;
+    Map<Integer, Integer> inorderIndexMap;
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        preorderIndex = 0;
+        // build a hashmap to store value -> its index relations
+        inorderIndexMap = new HashMap<>();
+        for (int i = 0; i < inorder.length; i++) {
+            inorderIndexMap.put(inorder[i], i);
+        }
+
+        return arrayToTree(preorder, 0, preorder.length - 1);
+    }
+
+    private TreeNode arrayToTree(int[] preorder, int left, int right) {
+        // if there are no elements to construct the tree
+        if (left > right) return null;
+
+        // select the preorder_index element as the root and increment it
+        int rootValue = preorder[preorderIndex++];
+        TreeNode root = new TreeNode(rootValue);
+
+        // build left and right subtree
+        // excluding inorderIndexMap[rootValue] element because it's the root
+        root.left = arrayToTree(preorder, left, inorderIndexMap.get(rootValue) - 1);
+        root.right = arrayToTree(preorder, inorderIndexMap.get(rootValue) + 1, right);
+        return root;
+    }
+}
+               
+        
+        
+        
+        
+    
+
+}
