@@ -1,0 +1,71 @@
+Given the root of a binary tree, return the same tree where every subtree (of the given tree) not containing a 1 has been removed.
+
+A subtree of a node node is node plus every node that is a descendant of node.
+
+ 
+
+Example 1:
+
+
+Input: root = [1,null,0,0,1]
+Output: [1,null,0,null,1]
+Explanation: 
+Only the red nodes satisfy the property "every subtree not containing a 1".
+The diagram on the right represents the answer.
+
+Solution:
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode pruneTree(TreeNode root) {
+
+
+        
+       rec(root);
+                if(root.left == null && root.right == null && root.val==0)
+            return null;
+        return root;
+
+        
+    }
+    public int rec(TreeNode root)
+    {
+        if(root!=null)
+        {
+            int left=0,right=0;
+            if(root.left != null)
+            {
+             left = rec(root.left);
+            }
+            if(root.right!=null)
+            {
+             right = rec(root.right);
+            }
+            if(left == 0 )
+            {
+                root.left = null;
+            }
+            if(right == 0)
+            {
+                root.right= null;
+            }
+            return root.val+left+right;
+        }
+        else
+        return 0;
+    }
+}
