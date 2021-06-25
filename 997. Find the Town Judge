@@ -1,0 +1,94 @@
+In a town, there are n people labelled from 1 to n.  There is a rumor that one of these people is secretly the town judge.
+
+If the town judge exists, then:
+
+The town judge trusts nobody.
+Everybody (except for the town judge) trusts the town judge.
+There is exactly one person that satisfies properties 1 and 2.
+You are given trust, an array of pairs trust[i] = [a, b] representing that the person labelled a trusts the person labelled b.
+
+If the town judge exists and can be identified, return the label of the town judge.  Otherwise, return -1.
+
+ 
+
+Example 1:
+
+Input: n = 2, trust = [[1,2]]
+Output: 2
+Example 2:
+
+Input: n = 3, trust = [[1,3],[2,3]]
+Output: 3
+
+
+
+Solution 1 :
+
+class Solution {
+    public int findJudge(int n, int[][] trust) {
+          int[] persons = new int[n+1]; 
+          for(int i=0;i<trust.length;i++)
+          { 
+              persons[trust[i][0]]--;
+              persons[trust[i][1]]++;
+          }
+        for(int i=1;i<n+1;i++)
+        {
+            if(persons[i]==n-1)return i;
+        }
+        return -1;
+        
+    }
+}
+
+
+
+
+Solution 2  :
+
+class Solution {
+public int findJudge(int n, int[][] trust) {
+//these two conditions are for silly test cases added by some frustrated soul!
+if(trust.length==0 && n==1) return 1;
+if(trust.length==0 && n!=1) return -1;
+
+    //Create hashmap to store persons and trusts in a graph 
+    HashMap<Integer,LinkedList<Integer>> graph= new HashMap<>();
+    //for each value in trust, create nodes and edge by iteration using for loop
+    for(int[] pair:trust){
+        //if first person is not in the graph, add a node for him
+        if(!graph.containsKey(pair[0])){
+            LinkedList<Integer> list= new LinkedList<Integer>();
+            graph.put(pair[0],list);
+        }
+        //if second person is not in the graph, add a node for him
+        if(!graph.containsKey(pair[1])){
+            LinkedList<Integer> list= new LinkedList<Integer>();
+            graph.put(pair[1],list);
+        }
+        //Create a trust edge
+        graph.get(pair[0]).add(pair[1]);
+    }
+    
+    Boolean isJudge=false;
+    
+    //iterate through all persons, check if anybody trusts nobody, check if this anybody is trusted by everybody
+        for(int i:graph.keySet()){
+            //checks if anybody trusts nobody i.e., his adjacency list will be empty 
+            if(graph.get(i).size()==0){
+            //let us assume that such person is judge
+            isJudge=true;
+            //iterate through every other body
+            for(int j:graph.keySet())
+                //check if the assumed judge is trusted by the other person 
+                if (graph.get(j).contains(i) && i!=j){}
+                //else if he is not trusted by somebody, set isJudge to false
+                else if(i!=j)isJudge=false;
+            }
+            //if he is trusted by every other person, return his label
+            if(isJudge==true) return i;
+        }
+    //Finally, if we are unable to find a judge, return -1
+        return -1;
+}
+}
